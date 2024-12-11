@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="text/javascript">
+    let worker;
+    let calcResultDiv;
+    function onLoad(event) {
+      calcResultDiv = document.getElementById('calc-result');
+
+      worker = new Worker("worker.js", { type: "module" });
+      worker.addEventListener("message", (event) => {
+        switch (event.data.type){
+          case "workerLoadResponse":
+            break;
+          
+          case "finishedCalculation":
+            console.log(event.data.calcResult);
+            calcResultDiv.textContent = event.data.calcResult;
+            break;
+        }
+      });
+      worker.postMessage({type: "loaded", loadText: "worker"})
+    }
+    window.addEventListener('DOMContentLoaded', onLoad, false);
+
+    function handleClick(event) {
+      if (!worker) return;
+      calcResultDiv.textContent = "";
+      worker.postMessage({type: "calculationStart"});
+    };
+  </script>
+</head>
+<body>
+  <button type="button" onclick="handleClick(event)">
+    Calc
+  </button>
+  <div id="calc-result"></div>
+</body>
+</html>
