@@ -3,13 +3,13 @@ self.addEventListener("message", async (event) => {
     case "loaded":
       console.log(`Hellow, ${event.data.loadText}!`);
       self.postMessage({
-        type: 'workerLoadResponse',
+        type: "workerLoadResponse",
       });
       break;
     case "calculationStart":
       await new Promise(resolve => setTimeout(resolve, 2000));
       self.postMessage({
-        type: 'finishedCalculation',
+        type: "finishedCalculation",
         calcResult: Math.random().toString()
       });
       break;

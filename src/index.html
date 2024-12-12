@@ -8,8 +8,7 @@
     let worker;
     let calcResultDiv;
     function onLoad(event) {
-      calcResultDiv = document.getElementById('calc-result');
-
+      calcResultDiv = document.getElementById("calc-result");
       worker = new Worker("worker.js", { type: "module" });
       worker.addEventListener("message", (event) => {
         switch (event.data.type){
@@ -24,19 +23,24 @@
       });
       worker.postMessage({type: "loaded", loadText: "worker"})
     }
-    window.addEventListener('DOMContentLoaded', onLoad, false);
+    window.addEventListener("DOMContentLoaded", onLoad, false);
 
     function handleClick(event) {
       if (!worker) return;
-      calcResultDiv.textContent = "";
+      calcResultDiv.textContent = "calculation start...";
       worker.postMessage({type: "calculationStart"});
     };
   </script>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <button type="button" onclick="handleClick(event)">
-    Calc
-  </button>
-  <div id="calc-result"></div>
+  <div id="container">
+    <button type="button" onclick="handleClick(event)">
+      Calc
+    </button>
+    <div id="calc-result">
+      <br />
+    </div>
+  </div>
 </body>
 </html>
